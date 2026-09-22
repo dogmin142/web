@@ -32,7 +32,7 @@ function startQuiz(){
   saveAttempt(a);openAttempt();
 }
 function resumeQuiz(){if(getAttempt())openAttempt()}
-function openAttempt(){clearInterval(tick);tick=setInterval(updateTimer,1000);renderQuestion();updateTimer();show('quiz')}
+function openAttempt(){clearInterval(tick);tick=setInterval(updateTimer,1000);renderQuestion();updateTimer();show('quiz');setTimeout(()=>window.initAdSense?.(),0)}
 function renderQuestion(){
   const a=getAttempt();if(!a){renderDash();show('dash');return}
   const i=a.current,q=bank[i];$('qNumber').textContent='Câu '+(i+1);$('qStatus').textContent=a.answers[i]==null?'Chưa trả lời':'Đã trả lời';
