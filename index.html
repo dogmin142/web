@@ -1,18 +1,135 @@
 <!doctype html>
-<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MathQuiz</title><link rel="stylesheet" href="style.css">
-<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head>
-<body><header><b>MathQuiz</b><span>Hệ thống luyện tập</span></header><main>
-<section id="login" class="card"><h1>Đăng nhập sinh viên</h1><p class="muted">Bản thử nghiệm: dùng một MSSV bất kỳ và mật khẩu từ 6 ký tự.</p>
-<label>Mã sinh viên</label><input id="studentId" autocomplete="username" placeholder="23123456">
-<label>Mật khẩu</label><input id="pw" type="password" autocomplete="current-password" placeholder="••••••••">
-<button onclick="login()">Đăng nhập</button><p id="loginErr" class="err"></p></section>
-<section id="dash" class="hidden"><div class="ad">VỊ TRÍ BANNER TÀI TRỢ — không yêu cầu click</div>
-<div class="card"><h1>Đại số tuyến tính</h1><p>Quiz demo • 30 câu • 30 phút • tối đa 3 lần • lấy điểm cao nhất</p>
-<div class="stats"><span>Sinh viên: <b id="who"></b></span><span>Lượt: <b id="attempts"></b></span><span>Điểm cao nhất: <b id="best"></b></span></div>
-<button id="startBtn" onclick="startQuiz()">Bắt đầu làm bài</button><button class="secondary" onclick="logout()">Đăng xuất</button></div></section>
-<section id="quiz" class="hidden"><div class="top"><b id="progress"></b><span id="timer">30:00</span></div><form id="questions"></form>
-<button onclick="submitQuiz(event)">Nộp bài</button></section>
-<section id="result" class="hidden card"><h1>Kết quả</h1><div class="score" id="score"></div><p id="summary"></p><button onclick="backDash()">Về trang chính</button></section>
-</main><footer>Prototype giáo dục • bản này lưu dữ liệu demo trong trình duyệt</footer><script src="app.js"></script></body></html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MathQuiz — Moodle-inspired demo</title>
+  <link rel="stylesheet" href="style.css">
+  <script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="sitebar">
+  <div class="brand">MathQuiz</div>
+  <div class="sitebar-right"><span id="headerUser"></span></div>
+</header>
+
+<main class="container">
+  <nav class="crumbs" aria-label="breadcrumb">Trang chủ / Khóa học / Đại số tuyến tính / Quiz</nav>
+
+  <section id="login" class="panel narrow">
+    <h1>Đăng nhập</h1>
+    <p class="muted">Bản thử nghiệm. Nhập MSSV và mật khẩu từ 6 ký tự.</p>
+    <label for="studentId">Mã sinh viên</label>
+    <input id="studentId" autocomplete="username" placeholder="23123456">
+    <label for="pw">Mật khẩu</label>
+    <input id="pw" type="password" autocomplete="current-password" placeholder="••••••••">
+    <button class="primary" onclick="login()">Đăng nhập</button>
+    <p id="loginErr" class="error"></p>
+  </section>
+
+  <section id="dash" class="hidden">
+    <div class="panel">
+      <h1>Quiz: Đại số tuyến tính</h1>
+      <p class="lead">Bài kiểm tra mẫu theo luồng làm bài quen thuộc của Moodle.</p>
+      <table class="info-table">
+        <tr><th>Số câu</th><td>30</td></tr>
+        <tr><th>Thời gian</th><td>30 phút</td></tr>
+        <tr><th>Số lần làm</th><td>Tối đa 3 lần</td></tr>
+        <tr><th>Cách tính điểm</th><td>Lấy điểm cao nhất</td></tr>
+      </table>
+      <div class="attempt-stats">
+        <div><span>Sinh viên</span><b id="who">—</b></div>
+        <div><span>Đã làm</span><b id="attempts">0/3</b></div>
+        <div><span>Điểm cao nhất</span><b id="best">—</b></div>
+      </div>
+      <button id="startBtn" class="primary" onclick="startQuiz()">Bắt đầu làm bài</button>
+      <button id="resumeBtn" class="secondary hidden" onclick="resumeQuiz()">Tiếp tục lần đang làm</button>
+      <button class="linkbtn" onclick="logout()">Đăng xuất</button>
+    </div>
+  </section>
+
+  <section id="quiz" class="hidden">
+    <h1 class="quiz-title">Quiz: Đại số tuyến tính</h1>
+    <div class="quiz-layout">
+      <div>
+        <article class="question-card">
+          <aside class="question-meta">
+            <h2 id="qNumber">Câu 1</h2>
+            <div id="qStatus" class="small">Chưa trả lời</div>
+            <div class="small">Điểm: 1,00</div>
+            <button id="flagBtn" class="flagbtn" type="button" onclick="toggleFlag()">⚑ Đánh dấu câu hỏi</button>
+          </aside>
+          <div class="question-body">
+            <div id="qPrompt" class="prompt"></div>
+            <div id="qOptions" class="options"></div>
+            <div class="question-ad" aria-label="Khu vực tài trợ">
+              <span>TÀI TRỢ</span>
+              <strong>Vị trí banner</strong>
+              <small>Không yêu cầu người học nhấp quảng cáo</small>
+            </div>
+          </div>
+        </article>
+
+        <div class="question-actions">
+          <button id="prevBtn" class="secondary" onclick="goPrev()">Trang trước</button>
+          <button id="nextBtn" class="primary" onclick="goNext()">Trang tiếp theo</button>
+        </div>
+      </div>
+
+      <aside class="nav-block">
+        <h2>Điều hướng bài kiểm tra</h2>
+        <div id="navGrid" class="nav-grid"></div>
+        <div class="legend">
+          <span><i class="legend-box answered"></i>Đã trả lời</span>
+          <span><i class="legend-box flagged"></i>Đã đánh dấu</span>
+        </div>
+        <button class="finish-link" onclick="showSummary()">Kết thúc lần làm bài…</button>
+        <div class="timer-box"><span>Thời gian còn lại</span><b id="timer">30:00</b></div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="summary" class="hidden">
+    <div class="panel">
+      <h1>Tóm tắt lần làm bài</h1>
+      <p class="muted">Kiểm tra trạng thái các câu trước khi nộp.</p>
+      <div class="summary-wrap">
+        <table class="summary-table">
+          <thead><tr><th>Câu</th><th>Trạng thái</th></tr></thead>
+          <tbody id="summaryRows"></tbody>
+        </table>
+      </div>
+      <div class="summary-actions">
+        <button class="secondary" onclick="returnToAttempt()">Quay lại làm bài</button>
+        <button class="danger" onclick="askSubmit()">Nộp tất cả và kết thúc</button>
+      </div>
+      <p class="deadline-note">Sau khi nộp, anh/chị không thể thay đổi câu trả lời của lần này.</p>
+    </div>
+  </section>
+
+  <section id="result" class="hidden">
+    <div class="panel">
+      <h1>Kết quả</h1>
+      <div id="score" class="score"></div>
+      <p id="summaryText"></p>
+      <button class="primary" onclick="backDash()">Về trang quiz</button>
+    </div>
+  </section>
+</main>
+
+<dialog id="submitDialog">
+  <form method="dialog" class="dialog-card">
+    <h2>Nộp bài?</h2>
+    <p>Bạn sắp nộp toàn bộ câu trả lời và kết thúc lần làm bài này.</p>
+    <div class="dialog-actions">
+      <button value="cancel" class="secondary">Hủy</button>
+      <button value="confirm" class="danger" onclick="finalSubmit(event)">Nộp bài</button>
+    </div>
+  </form>
+</dialog>
+
+<footer>MathQuiz prototype • giao diện và luồng làm bài tham khảo cách tổ chức Quiz của Moodle</footer>
+<script src="app.js"></script>
+</body>
+</html>
