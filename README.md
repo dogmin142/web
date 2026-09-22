@@ -1,17 +1,24 @@
 # MathQuiz
 
-Prototype website luyện tập cho khoảng 300 sinh viên.
+Prototype quiz cho khoảng 300 sinh viên, triển khai trên GitHub Pages.
 
-- Đăng nhập bằng MSSV + mật khẩu.
-- 30 câu hỏi có MathJax.
-- 30 phút/lượt, tối đa 3 lượt, giữ điểm cao nhất.
-- Giao diện responsive.
-- Có vị trí banner tài trợ nhưng không yêu cầu người học click.
+## Luồng làm bài
 
-## Lưu ý
+Bản giao diện hiện tại tham khảo các mẫu tương tác phổ biến của Moodle Quiz:
 
-Đây là prototype front-end. MSSV, mật khẩu demo, đáp án và điểm hiện được xử lý trong trình duyệt nên **chưa dùng cho thi thật**.
+- Một câu hỏi trên mỗi màn hình.
+- Khối **Điều hướng bài kiểm tra** với số câu và trạng thái đã trả lời.
+- Có thể **đánh dấu câu hỏi** để quay lại.
+- Nút Trang trước / Trang tiếp theo.
+- Đồng hồ đếm ngược và tự nộp khi hết giờ.
+- Màn hình **Tóm tắt lần làm bài** trước khi nộp.
+- Tối đa 3 lần làm và giữ điểm cao nhất.
+- Tự lưu đáp án đang làm vào localStorage để có thể tiếp tục sau khi tải lại trang.
+- MathJax cho công thức toán.
+- Một vùng banner tài trợ trong mỗi màn hình câu hỏi, tách khỏi nút điều hướng.
 
-Bản production nên dùng Supabase Auth/Database + Row Level Security, whitelist MSSV, lưu đáp án/điểm phía server và dashboard giảng viên.
+## Cảnh báo
 
-Repo được chuẩn bị để xuất bản bằng GitHub Pages.
+Đây vẫn là **prototype front-end**, chưa phù hợp cho kỳ thi chính thức. Đăng nhập, đáp án và điểm vẫn nằm trong trình duyệt.
+
+Bản production nên chuyển sang Supabase/Postgres với xác thực tài khoản, Row Level Security, ngân hàng câu hỏi phía server, ghi nhận attempt/grade phía server, dashboard giảng viên và import/export câu hỏi.
