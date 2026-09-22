@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MathQuiz</title><link rel="stylesheet" href="style.css">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head>
+<body><header><b>MathQuiz</b><span>Hệ thống luyện tập</span></header><main>
+<section id="login" class="card"><h1>Đăng nhập sinh viên</h1><p class="muted">Bản thử nghiệm: dùng một MSSV bất kỳ và mật khẩu từ 6 ký tự.</p>
+<label>Mã sinh viên</label><input id="studentId" autocomplete="username" placeholder="23123456">
+<label>Mật khẩu</label><input id="pw" type="password" autocomplete="current-password" placeholder="••••••••">
+<button onclick="login()">Đăng nhập</button><p id="loginErr" class="err"></p></section>
+<section id="dash" class="hidden"><div class="ad">VỊ TRÍ BANNER TÀI TRỢ — không yêu cầu click</div>
+<div class="card"><h1>Đại số tuyến tính</h1><p>Quiz demo • 30 câu • 30 phút • tối đa 3 lần • lấy điểm cao nhất</p>
+<div class="stats"><span>Sinh viên: <b id="who"></b></span><span>Lượt: <b id="attempts"></b></span><span>Điểm cao nhất: <b id="best"></b></span></div>
+<button id="startBtn" onclick="startQuiz()">Bắt đầu làm bài</button><button class="secondary" onclick="logout()">Đăng xuất</button></div></section>
+<section id="quiz" class="hidden"><div class="top"><b id="progress"></b><span id="timer">30:00</span></div><form id="questions"></form>
+<button onclick="submitQuiz(event)">Nộp bài</button></section>
+<section id="result" class="hidden card"><h1>Kết quả</h1><div class="score" id="score"></div><p id="summary"></p><button onclick="backDash()">Về trang chính</button></section>
+</main><footer>Prototype giáo dục • bản này lưu dữ liệu demo trong trình duyệt</footer><script src="app.js"></script></body></html>
