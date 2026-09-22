@@ -63,13 +63,18 @@
           <div class="question-body">
             <div id="qPrompt" class="prompt"></div>
             <div id="qOptions" class="options"></div>
-            <div class="question-ad" aria-label="Khu vực tài trợ">
-              <span>TÀI TRỢ</span>
-              <strong>Vị trí banner</strong>
-              <small>Không yêu cầu người học nhấp quảng cáo</small>
-            </div>
           </div>
         </article>
+
+        <div class="adsense-wrap" aria-label="Quảng cáo">
+          <div class="ad-label">QUẢNG CÁO</div>
+          <div id="googleAdSlot" class="adsense-slot">
+            <div class="ad-placeholder">
+              <strong>Google AdSense</strong>
+              <span>Vị trí banner đã sẵn sàng — cần Publisher ID và Ad slot ID để hiển thị quảng cáo thật.</span>
+            </div>
+          </div>
+        </div>
 
         <div class="question-actions">
           <button id="prevBtn" class="secondary" onclick="goPrev()">Trang trước</button>
@@ -130,6 +135,7 @@
 </dialog>
 
 <footer>MathQuiz prototype • giao diện và luồng làm bài tham khảo cách tổ chức Quiz của Moodle</footer>
+<script src="adsense.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
